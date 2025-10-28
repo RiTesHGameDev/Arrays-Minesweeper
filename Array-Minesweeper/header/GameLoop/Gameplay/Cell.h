@@ -39,8 +39,10 @@ namespace Gameplay
         CellState current_cell_state;
         CellType cell_type;
 
-		void Initialize(float width, float height, sf::Vector2i position);
-
+        const float cell_top_offset = 274.0f;
+        const float cell_left_offset = 583.0f;
+        void Initialize(float width, float height, sf::Vector2i position);
+        sf::Vector2f Get_Cell_Screen_Position()const;
 	public:
 		Cell(float width, float height, sf::Vector2i position);
 		~Cell() = default;
