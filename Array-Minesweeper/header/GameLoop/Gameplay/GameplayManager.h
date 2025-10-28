@@ -11,7 +11,7 @@ namespace Gameplay
 
 		sf::Texture background_texture;
 		sf::Sprite background_sprite;
-		std::string background_texture_path = "assets/textures/minsweeper_bg.png";
+		std::string background_texture_path = "assets/textures/minesweeper_bg.png";
 		Board* board;
 
 		void Initialize();
