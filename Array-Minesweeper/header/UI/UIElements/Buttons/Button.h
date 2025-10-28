@@ -24,6 +24,7 @@ namespace UIElements
 			Button(const std::string& texture_path, const sf::Vector2f& position,
 				float width, float height);
 			void Render(sf::RenderWindow& window)const;
+			void Set_Texture_Rect(const sf::IntRect& rect);
 		};
 	}
 }
