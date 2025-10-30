@@ -13,7 +13,7 @@ namespace Gameplay
 		/*sf::Vector2f float_position(static_cast<float>(position.x),
 			static_cast<float>(position.y));*/ //converted into float
 
-		sf::Vector2f cell_screen_position = Get_Cell_Screen_Position();
+		sf::Vector2f cell_screen_position = Get_Cell_Screen_Position(width,height);
 
 		cell_button = new Buttons::Button(cell_texture_path, cell_screen_position, 
 			width * slice_count, height);
@@ -41,10 +41,10 @@ namespace Gameplay
 	{
 		cell_type = type;
 	}
-	sf::Vector2f Cell::Get_Cell_Screen_Position()const
+	sf::Vector2f Cell::Get_Cell_Screen_Position(float width,float height)const
 	{
-		float x_screen_position = cell_left_offset;
-		float y_screen_position = cell_top_offset;
+		float x_screen_position = cell_left_offset + position.x * width;
+		float y_screen_position = cell_top_offset + position.y * height;
 
 		return sf::Vector2f(x_screen_position, y_screen_position);
 	}
