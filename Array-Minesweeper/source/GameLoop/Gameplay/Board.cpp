@@ -28,9 +28,12 @@ namespace Gameplay
 		float cell_width = Get_Cell_Width_In_Board();
 		float cell_height = Get_Cell_Height_In_Board();
 
-		for (int col = 0; col < number_of_columns; ++col)
+		for(int row = 0; row < number_of_rows; ++row)
 		{
-			cell[col] = new Cell(cell_width, cell_height, sf::Vector2i(col, 0));
+			for (int col = 0; col < number_of_columns; ++col)
+			{
+				cell[row][col] = new Cell(cell_width, cell_height, sf::Vector2i(row,col));
+			}
 		}
 	}
 	float Board::Get_Cell_Width_In_Board()const
@@ -44,10 +47,13 @@ namespace Gameplay
 	void Board::Render(sf::RenderWindow& window)
 	{
 		window.draw(board_sprite);
-		for (int col = 0; col < number_of_columns;++col)
+		for (int row = 0; row < number_of_rows; ++row)
 		{
-			cell[col]->Render(window);
+			for (int col = 0; col < number_of_columns;++col)
+			{
+				cell[row][col]->Render(window);
 
+			}
 		}
 	}
 }
