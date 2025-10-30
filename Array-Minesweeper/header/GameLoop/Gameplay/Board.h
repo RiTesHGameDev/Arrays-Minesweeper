@@ -20,7 +20,7 @@ namespace Gameplay
 		static const int number_of_rows = 9;
 		static const int number_of_columns = 9;
 
-		Cell* cell[number_of_columns];
+		Cell* cell[number_of_rows][number_of_columns];
 
 		const float horizontal_cell_padding = 115.0f;
 		const float vertical_cell_paddling = 329.0f;
