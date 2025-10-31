@@ -10,7 +10,15 @@ namespace Gameplay
 	void Board::Initialize()
 	{
 		Initialize_Board_Image();
+		Initialize_Variables();
 		Create_Board();
+
+		Populate_Board();
+	}
+	void Board::Initialize_Variables()
+	{
+		//funtion to initialize random engine
+		random_engine.seed(random_device());
 	}
 	void Board::Initialize_Board_Image()
 	{
@@ -55,5 +63,70 @@ namespace Gameplay
 
 			}
 		}
+	}
+	void Board::Populate_Board()
+	{
+		Populate_Mines();
+		Populate_Cells();
+	}
+	void Board::Populate_Mines()
+	{
+		std::uniform_int_distribution<int>x_dist(0, number_of_columns - 1);
+		std::uniform_int_distribution<int>y_dist(0,number_of_rows - 1);
+
+		int mine_placed = 0;
+
+		while (mine_placed < mines_count)
+		{
+			int x = x_dist(random_engine);
+			int y = y_dist(random_engine);
+
+			if (cell[x][y]->Get_Cell_Type()!= CellType::MINE)
+			{
+				cell[x][y]->Set_Cell_Type(CellType::MINE);
+				++mine_placed;
+			}
+		}
+	}
+	void Board::Populate_Cells()
+	{
+		for (int row = 0;row < number_of_rows;++row)
+		{
+			for (int col = 0;col < number_of_columns;++col)
+			{
+				if (cell[row][col]->Get_Cell_Type() != CellType::MINE)
+				{
+					int mines_around = Count_Mines_Around(sf::Vector2i(row, col));
+					cell[row][col]->Set_Cell_Type(static_cast<CellType>(mines_around));
+				}
+			}
+		}
+	}
+	int Board::Count_Mines_Around(sf::Vector2i cell_position)
+	{
+		int mines_around = 0;
+
+		for (int a = -1;a <= 1; ++a)
+		{
+			for (int b = -1;b <= 1;++b)
+			{
+				//skipping the current cell as need to count mines around current cell
+				if ((a == 0 && b == 0) ||
+					!Is_Valid_Cell_Position(sf::Vector2i(cell_position.x + a, cell_position.y + b)))
+				
+					continue;
+				//checking and counting mines
+				if (cell[cell_position.x + a][cell_position.y + b]->Get_Cell_Type() == CellType::MINE)
+				{
+					mines_around++;
+				}
+			}
+		}
+		return mines_around;
+	}
+	bool Board::Is_Valid_Cell_Position(sf::Vector2i cell_position)
+	{
+		return(cell_position.x >= 0 && cell_position.y >= 0 &&
+			cell_position.x < number_of_columns && cell_position.y < number_of_rows);
 	}
 }
