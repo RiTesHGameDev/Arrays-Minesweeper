@@ -40,6 +40,10 @@ namespace Gameplay
 		void Populate_Board();
 		void Populate_Mines();
 		void Initialize_Variables();
+
+		int Count_Mines_Around(sf::Vector2i cell_position);
+		void Populate_Cells();
+		bool Is_Valid_Cell_Position(sf::Vector2i cell_position);
 	public:
 		Board();
 		void Render(sf::RenderWindow& window);
