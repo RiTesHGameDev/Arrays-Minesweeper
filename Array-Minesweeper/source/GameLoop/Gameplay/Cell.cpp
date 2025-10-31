@@ -17,6 +17,7 @@ namespace Gameplay
 
 		cell_button = new Buttons::Button(cell_texture_path, cell_screen_position, 
 			width * slice_count, height);
+		current_cell_state = CellState::OPEN;
 
 	}
 	void Cell::Render(sf::RenderWindow& window)
@@ -29,7 +30,7 @@ namespace Gameplay
 	{
 		return current_cell_state;
 	}
-	CellType Cell::Get_Cell_Tyoe()const
+	CellType Cell::Get_Cell_Type()const
 	{
 		return cell_type;
 	}

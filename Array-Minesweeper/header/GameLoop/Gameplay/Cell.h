@@ -55,7 +55,7 @@ namespace Gameplay
         CellState Get_Cell_State()const;
         void Set_Cell_State(CellState state);
 
-        CellType Get_Cell_Tyoe()const;
+        CellType Get_Cell_Type()const;
         void Set_Cell_Type(CellType type);
 
         void Set_Cell_Texture();

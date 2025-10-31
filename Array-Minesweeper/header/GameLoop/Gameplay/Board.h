@@ -25,12 +25,21 @@ namespace Gameplay
 		const float horizontal_cell_padding = 115.0f;
 		const float vertical_cell_paddling = 329.0f;
 
+		std::default_random_engine random_engine;
+		std::random_device random_device;
+
+		static const int mines_count = 9;
+
 		void Initialize_Board_Image();
 		void Initialize();
 		void Create_Board();
 
 		float Get_Cell_Width_In_Board()const;
 		float Get_Cell_Height_In_Board()const;
+
+		void Populate_Board();
+		void Populate_Mines();
+		void Initialize_Variables();
 	public:
 		Board();
 		void Render(sf::RenderWindow& window);

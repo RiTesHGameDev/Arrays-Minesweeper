@@ -10,7 +10,15 @@ namespace Gameplay
 	void Board::Initialize()
 	{
 		Initialize_Board_Image();
+		Initialize_Variables();
 		Create_Board();
+
+		Populate_Board();
+	}
+	void Board::Initialize_Variables()
+	{
+		//funtion to initialize random engine
+		random_engine.seed(random_device());
 	}
 	void Board::Initialize_Board_Image()
 	{
@@ -53,6 +61,29 @@ namespace Gameplay
 			{
 				cell[row][col]->Render(window);
 
+			}
+		}
+	}
+	void Board::Populate_Board()
+	{
+		Populate_Mines();
+	}
+	void Board::Populate_Mines()
+	{
+		std::uniform_int_distribution<int>x_dist(0, number_of_columns - 1);
+		std::uniform_int_distribution<int>y_dist(0,number_of_rows - 1);
+
+		int mine_placed = 0;
+
+		while (mine_placed < mines_count)
+		{
+			int x = x_dist(random_engine);
+			int y = y_dist(random_engine);
+
+			if (cell[x][y]->Get_Cell_Type()!= CellType::MINE)
+			{
+				cell[x][y]->Set_Cell_Type(CellType::MINE);
+				++mine_placed;
 			}
 		}
 	}
