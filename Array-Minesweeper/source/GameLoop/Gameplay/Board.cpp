@@ -144,11 +144,19 @@ namespace Gameplay
 	{
 		if(mouse_button_type == MouseButtonType::LEFT_MOUSE_BUTTON)
 		{ 
-		
+			Open_Cell(cell_position);//open the cell when left clicked
 		}
 		else if (mouse_button_type == MouseButtonType::RIGHT_MOUSE_BUTTON)
 		{
 
 		}
+	}
+	void Board::Open_Cell(sf::Vector2i cell_position)
+	{
+		if (!cell[cell_position.x][cell_position.y]->Can_Open_Call())
+		{
+			return;
+		}
+		cell[cell_position.x][cell_position.y]->Open();
 	}
 }

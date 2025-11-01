@@ -89,4 +89,12 @@ namespace Gameplay
 		if(cell_button)
 		cell_button->Handle_Button_Interactions(event_manager, window);
 	}
+	bool Cell::Can_Open_Call()const
+	{
+		return current_cell_state == CellState::HIDDEN;
+	}
+	void Cell::Open()
+	{
+		Set_Cell_State(CellState::OPEN);
+	}
 }

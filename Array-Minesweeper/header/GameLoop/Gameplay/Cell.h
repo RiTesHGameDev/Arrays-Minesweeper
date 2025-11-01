@@ -68,5 +68,8 @@ namespace Gameplay
         void Set_Cell_Type(CellType type);
 
         void Set_Cell_Texture();
+
+        bool Can_Open_Call()const;
+        void Open();
 	};
 }

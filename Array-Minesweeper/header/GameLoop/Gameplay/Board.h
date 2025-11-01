@@ -44,6 +44,8 @@ namespace Gameplay
 		int Count_Mines_Around(sf::Vector2i cell_position);
 		void Populate_Cells();
 		bool Is_Valid_Cell_Position(sf::Vector2i cell_position);
+
+		void Open_Cell(sf::Vector2i cell_position);
 	public:
 		Board();
 		void On_Cell_Button_Clicked(sf::Vector2i cell_position, UIElements::Buttons::MouseButtonType mouse_button_type);
