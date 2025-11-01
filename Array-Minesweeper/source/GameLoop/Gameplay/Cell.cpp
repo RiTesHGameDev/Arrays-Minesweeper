@@ -97,4 +97,15 @@ namespace Gameplay
 	{
 		Set_Cell_State(CellState::OPEN);
 	}
+	void Cell::Toggle_Flag()
+	{
+		if (current_cell_state == CellState::HIDDEN)
+		{
+			Set_Cell_State(CellState::FLAGGED);
+		}
+		else if (current_cell_state == CellState::FLAGGED)
+		{
+			Set_Cell_State(CellState::HIDDEN);
+		}
+	}
 }

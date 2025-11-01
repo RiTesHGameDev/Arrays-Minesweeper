@@ -148,7 +148,7 @@ namespace Gameplay
 		}
 		else if (mouse_button_type == MouseButtonType::RIGHT_MOUSE_BUTTON)
 		{
-
+			Toggle_Flag(cell_position);
 		}
 	}
 	void Board::Open_Cell(sf::Vector2i cell_position)
@@ -158,5 +158,10 @@ namespace Gameplay
 			return;
 		}
 		cell[cell_position.x][cell_position.y]->Open();
+	}
+	void Board::Toggle_Flag(sf::Vector2i cell_position)
+	{
+		cell[cell_position.x][cell_position.y]->Toggle_Flag();
+		flagged_cells += (cell[cell_position.x][cell_position.y]->Get_Cell_State() == CellState::FLAGGED)?1:-1;
 	}
 }

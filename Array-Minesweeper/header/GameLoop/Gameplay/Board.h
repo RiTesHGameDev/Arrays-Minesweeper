@@ -45,7 +45,9 @@ namespace Gameplay
 		void Populate_Cells();
 		bool Is_Valid_Cell_Position(sf::Vector2i cell_position);
 
+		int flagged_cells;
 		void Open_Cell(sf::Vector2i cell_position);
+		void Toggle_Flag(sf::Vector2i cell_position);
 	public:
 		Board();
 		void On_Cell_Button_Clicked(sf::Vector2i cell_position, UIElements::Buttons::MouseButtonType mouse_button_type);
