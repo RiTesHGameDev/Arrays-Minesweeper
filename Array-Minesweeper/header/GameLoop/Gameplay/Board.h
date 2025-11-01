@@ -46,6 +46,8 @@ namespace Gameplay
 		bool Is_Valid_Cell_Position(sf::Vector2i cell_position);
 	public:
 		Board();
+		void On_Cell_Button_Clicked(sf::Vector2i cell_position, UIElements::Buttons::MouseButtonType mouse_button_type);
 		void Render(sf::RenderWindow& window);
+		void Update(Event::EventPollingManager& event_Manager, const sf::RenderWindow& window);
 	};
 }

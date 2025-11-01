@@ -34,5 +34,9 @@ namespace Gameplay
 		window.draw(background_sprite);
 		board->Render(window);
 	}
-
+	void GameplayManager::Update(Event::EventPollingManager& event_manager,
+		const sf::RenderWindow& window)
+	{
+		board->Update(event_manager, window);
+	}
 }

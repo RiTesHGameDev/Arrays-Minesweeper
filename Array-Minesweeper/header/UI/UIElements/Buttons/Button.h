@@ -18,6 +18,10 @@ namespace UIElements
 			sf::Texture button_texture;
 			sf::Sprite button_sprite;
 
+			using CallBackFunction = std::function<void(MouseButtonType)>;
+			CallBackFunction call_back_function = nullptr;
+
+			bool Is_Mouse_On_Sprite(Event::EventPollingManager& event_manager, const sf::RenderWindow& window);
 			void Initialize(const std::string& texture_path, const sf::Vector2f& position,
 				float width, float height);
 		public:
@@ -25,6 +29,9 @@ namespace UIElements
 				float width, float height);
 			void Render(sf::RenderWindow& window)const;
 			void Set_Texture_Rect(const sf::IntRect& rect);
+			void Handle_Button_Interactions(Event::EventPollingManager& event_manager,
+				const sf::RenderWindow& window);
+			void Register_Callback_Function(CallBackFunction button_callback);
 		};
 	}
 }

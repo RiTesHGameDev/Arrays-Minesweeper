@@ -1,24 +1,40 @@
 #include <iostream>
 #include "../../header/GameLoop/Gameplay/Cell.h"
+#include "../../header/GameLoop/Gameplay/Board.h"
 
 namespace Gameplay
 {
-	Cell::Cell(float width, float height, sf::Vector2i position)
+	Cell::Cell(float width, float height, sf::Vector2i position,Board* board)
 	{
-		Initialize(width, height, position);
+		Initialize(width, height, position,board);
 	}
-	void Cell::Initialize(float width, float height, sf::Vector2i position)
+	void Cell::Initialize(float width, float height, sf::Vector2i position,Board* board)
 	{
 		this->position = position;
-		/*sf::Vector2f float_position(static_cast<float>(position.x),
-			static_cast<float>(position.y));*/ //converted into float
+		this->board = board;
 
 		sf::Vector2f cell_screen_position = Get_Cell_Screen_Position(width,height);
 
-		cell_button = new Buttons::Button(cell_texture_path, cell_screen_position, 
+		cell_button = new Button(cell_texture_path, cell_screen_position, 
 			width * slice_count, height);
-		current_cell_state = CellState::OPEN;
+		current_cell_state = CellState::HIDDEN;
 
+		Register_Cell_Button_Call_Back();
+
+	}
+	void Cell::Register_Cell_Button_Call_Back()
+	{
+		//Call Cell's own call back logix
+		cell_button->Register_Callback_Function([this](MouseButtonType button_type)
+			{Cell_Button_Call_Back(button_type);});
+	}
+	void Cell::Cell_Button_Call_Back(MouseButtonType button_type)
+	{
+		board->On_Cell_Button_Clicked(Get_Cell_Position(), button_type);
+	}
+	sf::Vector2i Cell::Get_Cell_Position()
+	{
+		return position;
 	}
 	void Cell::Render(sf::RenderWindow& window)
 	{
@@ -67,5 +83,10 @@ namespace Gameplay
 			cell_button->Set_Texture_Rect(sf::IntRect(11 * tile_size, 0, tile_size, tile_size));
 			break;
 		}
+	}
+	void Cell::Update(Event::EventPollingManager& event_manager,const sf::RenderWindow& window)
+	{
+		if(cell_button)
+		cell_button->Handle_Button_Interactions(event_manager, window);
 	}
 }
