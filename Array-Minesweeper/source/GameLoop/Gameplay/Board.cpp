@@ -144,24 +144,75 @@ namespace Gameplay
 	{
 		if(mouse_button_type == MouseButtonType::LEFT_MOUSE_BUTTON)
 		{ 
+			Sound::SoundManager::PlaySound(Sound::SoundType::BUTTON_CLICK);
 			Open_Cell(cell_position);//open the cell when left clicked
 		}
 		else if (mouse_button_type == MouseButtonType::RIGHT_MOUSE_BUTTON)
 		{
+			Sound::SoundManager::PlaySound(Sound::SoundType::FLAG);
 			Toggle_Flag(cell_position);
 		}
 	}
 	void Board::Open_Cell(sf::Vector2i cell_position)
 	{
 		if (!cell[cell_position.x][cell_position.y]->Can_Open_Call())
-		{
 			return;
-		}
-		cell[cell_position.x][cell_position.y]->Open();
+		Process_Cell_Type(cell_position);
 	}
 	void Board::Toggle_Flag(sf::Vector2i cell_position)
 	{
 		cell[cell_position.x][cell_position.y]->Toggle_Flag();
 		flagged_cells += (cell[cell_position.x][cell_position.y]->Get_Cell_State() == CellState::FLAGGED)?1:-1;
+	}
+	void Board::Process_Cell_Type(sf::Vector2i cell_position)
+	{
+		switch (cell[cell_position.x][cell_position.y]->Get_Cell_Type())
+		{
+		case CellType::EMPTY:
+			process_Empty_Cell(cell_position);
+			break;
+		case CellType::MINE:
+			break;
+		default:
+			cell[cell_position.x][cell_position.y]->Open();
+			break;
+		}
+	}
+	void Board::process_Empty_Cell(sf::Vector2i cell_position)
+	{
+		CellState cell_state = cell[cell_position.x][cell_position.y]->Get_Cell_State();
+		switch (cell_state)
+		{
+		case CellState::OPEN:
+			return;
+		default:
+			cell[cell_position.x][cell_position.y]->Open();
+
+			//checking neighbors
+			for (int a = -1;a <= 1;++a)
+			{
+				for (int b = -1;b <= 1;++b)
+				{
+					//storing neighbor cell's position
+					sf::Vector2i next_cell_position = sf::Vector2i(cell_position.x + a, cell_position.y + b);
+					
+					//skip current cell and invalid positions
+					if (a == 0 && b == 0 || !Is_Valid_Cell_Position(next_cell_position))
+					{
+						continue;
+					}
+
+					//flagged cell state
+					CellState next_cell_state = cell[cell_position.x][cell_position.y]->Get_Cell_State();
+					if (next_cell_state == CellState::FLAGGED)
+					{
+						Toggle_Flag(next_cell_position);
+					}
+
+					//Opening neighbots cell
+					Open_Cell(next_cell_position);
+				}
+			}
+		}
 	}
 }
