@@ -18,7 +18,7 @@ namespace Gameplay
 	}
 	void GameplayManager::Initialize_Variables()
 	{
-		board = new Board();
+		board = new Board(this);
 	}
 	void GameplayManager::Initialize_Background_Image()
 	{
@@ -37,6 +37,17 @@ namespace Gameplay
 	void GameplayManager::Update(Event::EventPollingManager& event_manager,
 		const sf::RenderWindow& window)
 	{
-		board->Update(event_manager, window);
+		if (!Has_Game_Ended())
+		{
+			board->Update(event_manager, window);
+		}
+	}
+	void GameplayManager::SetGameResult(GameResult gameResult)
+	{
+		this->game_result = gameResult;
+	}
+	bool GameplayManager::Has_Game_Ended()
+	{
+		return game_result != GameResult::NONE;
 	}
 }

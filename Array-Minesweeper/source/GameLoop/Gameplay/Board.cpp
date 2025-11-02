@@ -1,22 +1,24 @@
 #include "../../header/GameLoop/Gameplay/Board.h"
+#include "../../header/GameLoop/Gameplay/GameplayManager.h"
 #include <iostream>
 
 namespace Gameplay
 {
-	Board::Board()
+	Board::Board(GameplayManager* gameplay_manager)
 	{
-		Initialize();
+		Initialize(gameplay_manager);
 	}
-	void Board::Initialize()
+	void Board::Initialize(GameplayManager* gameplay_manager)
 	{
 		Initialize_Board_Image();
-		Initialize_Variables();
+		Initialize_Variables(gameplay_manager);
 		Create_Board();
 
 		Populate_Board();
 	}
-	void Board::Initialize_Variables()
+	void Board::Initialize_Variables(GameplayManager* gameplayManager)
 	{
+		this->gameplay_manager = gameplayManager;
 		//funtion to initialize random engine
 		random_engine.seed(random_device());
 	}
@@ -169,16 +171,17 @@ namespace Gameplay
 		switch (cell[cell_position.x][cell_position.y]->Get_Cell_Type())
 		{
 		case CellType::EMPTY:
-			process_Empty_Cell(cell_position);
+			Process_Empty_Cell(cell_position);
 			break;
 		case CellType::MINE:
+			Process_Mine_Cell(cell_position);
 			break;
 		default:
 			cell[cell_position.x][cell_position.y]->Open();
 			break;
 		}
 	}
-	void Board::process_Empty_Cell(sf::Vector2i cell_position)
+	void Board::Process_Empty_Cell(sf::Vector2i cell_position)
 	{
 		CellState cell_state = cell[cell_position.x][cell_position.y]->Get_Cell_State();
 		switch (cell_state)
@@ -211,6 +214,25 @@ namespace Gameplay
 
 					//Opening neighbots cell
 					Open_Cell(next_cell_position);
+				}
+			}
+		}
+	}
+	void Board::Process_Mine_Cell(sf::Vector2i cell_position)
+	{
+		gameplay_manager->SetGameResult(GameResult::LOST);
+		Sound::SoundManager::PlaySound(Sound::SoundType::EXPLOSION);
+		Reveal_All_Mines();
+	}
+	void Board::Reveal_All_Mines()
+	{
+		for (int row = 0;row < number_of_rows;++row)
+		{
+			for (int col = 0;col < number_of_columns;++col)
+			{
+				if (cell[row][col]->Get_Cell_Type() == CellType::MINE)
+				{
+					cell[row][col]->Set_Cell_State(CellState::OPEN);
 				}
 			}
 		}
