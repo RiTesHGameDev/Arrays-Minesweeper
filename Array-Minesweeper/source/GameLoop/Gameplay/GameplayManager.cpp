@@ -20,6 +20,7 @@ namespace Gameplay
 	void GameplayManager::Initialize_Variables()
 	{
 		board = new Board(this);
+		gameplay_ui = new GameplayUI(this);
 		remaining_time = max_level_duration;
 	}
 	void GameplayManager::Initialize_Background_Image()
@@ -31,22 +32,20 @@ namespace Gameplay
 		background_sprite.setTexture(background_texture);
 		background_sprite.setColor(sf::Color(255, 255, 255, background_aplha));
 	}
-	void GameplayManager::Render(sf::RenderWindow& window)
-	{
-		window.draw(background_sprite);
-		board->Render(window);
-	}
 	void GameplayManager::Update(Event::EventPollingManager& event_manager,
 		 sf::RenderWindow& window)
 	{
 		if (!Has_Game_Ended())
-		{
 			Handle_Gameplay(event_manager,window);
-		}
 		else if (board->Get_Board_State() != BoardState::COMPLETED)
-		{
 			Process_Game_Result();
-		}
+		gameplay_ui->Update(Get_Remaining_Mines_Count(), static_cast<int>(remaining_time), event_manager, window);
+	}
+	void GameplayManager::Render(sf::RenderWindow& window)
+	{
+		window.draw(background_sprite);
+		board->Render(window);
+		gameplay_ui->Render(window);
 	}
 	void GameplayManager::Handle_Gameplay(Event::EventPollingManager& event_manager, sf::RenderWindow& window)
 	{
@@ -58,6 +57,10 @@ namespace Gameplay
 	{
 		remaining_time -= Time::TimeManager::getDeltaTime();
 		Process_Time_Over();
+	}
+	int GameplayManager::Get_Remaining_Mines_Count()const
+	{
+		return board->Get_Remaining_Mines_Counts();
 	}
 	void GameplayManager::Process_Time_Over()
 	{
@@ -107,5 +110,12 @@ namespace Gameplay
 	bool GameplayManager::Has_Game_Ended()
 	{
 		return game_result != GameResult::NONE;
+	}
+	void GameplayManager::Restart_Game()
+	{
+		game_result = GameResult::NONE;
+		board->Reset();
+		Time::TimeManager::initialize();
+		remaining_time = max_level_duration;
 	}
 }

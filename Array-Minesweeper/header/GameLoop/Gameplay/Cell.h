@@ -72,5 +72,6 @@ namespace Gameplay
         bool Can_Open_Call()const;
         void Open();
         void Toggle_Flag();
+        void Reset();
 	};
 }

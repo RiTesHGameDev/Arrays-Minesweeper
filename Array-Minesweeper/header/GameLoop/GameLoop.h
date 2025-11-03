@@ -3,6 +3,7 @@
 #include "../../header/Event/EventPollingManager.h"
 #include "../../header/UI/SplashScreen/SplashScreenManager.h"
 #include "../../header/GameLoop/Gameplay/GameplayManager.h"
+#include "../../header/UI/MainMenu/MainMenuManager.h"
 
 using namespace GameWindow;
 using namespace Event;
@@ -26,6 +27,8 @@ private:
 
     sf::RenderWindow* game_window;
     SplashScreenManager* splash_screen_manager;
+
+    MainMenuManager* main_menu_manager;
 
     static GameState current_state;
 

@@ -276,6 +276,10 @@ namespace Gameplay
 		}
 		return open_cell == (total_cells - mines_count);
 	}
+	int Board::Get_Remaining_Mines_Counts()const
+	{
+		return mines_count - flagged_cells;
+	}
 	BoardState Board::Get_Board_State()const
 	{
 		return board_state;
@@ -283,5 +287,17 @@ namespace Gameplay
 	void Board::Set_Board_State(BoardState state)
 	{
 		board_state = state;
+	}
+	void Board::Reset()
+	{
+		for (int row = 0; row < number_of_rows;++row)
+		{
+			for (int col = 0; col < number_of_columns; ++col)
+			{
+				cell[row][col]->Reset();
+			}
+		}
+		flagged_cells = 0;
+		board_state = BoardState::FIRST_CELL;
 	}
 }
