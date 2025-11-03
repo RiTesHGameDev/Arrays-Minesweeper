@@ -52,5 +52,6 @@ namespace Gameplay
 		void Process_Game_Result();
 		void Render(sf::RenderWindow& window);
 		void Update(Event::EventPollingManager& event_manager,sf::RenderWindow& window);
+		void Restart_Game();
 	};
 }

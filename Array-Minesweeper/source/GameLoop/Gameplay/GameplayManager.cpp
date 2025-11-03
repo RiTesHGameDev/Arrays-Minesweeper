@@ -111,4 +111,11 @@ namespace Gameplay
 	{
 		return game_result != GameResult::NONE;
 	}
+	void GameplayManager::Restart_Game()
+	{
+		game_result = GameResult::NONE;
+		board->Reset();
+		Time::TimeManager::initialize();
+		remaining_time = max_level_duration;
+	}
 }

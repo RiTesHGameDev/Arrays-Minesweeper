@@ -288,4 +288,16 @@ namespace Gameplay
 	{
 		board_state = state;
 	}
+	void Board::Reset()
+	{
+		for (int row = 0; row < number_of_rows;++row)
+		{
+			for (int col = 0; col < number_of_columns; ++col)
+			{
+				cell[row][col]->Reset();
+			}
+		}
+		flagged_cells = 0;
+		board_state = BoardState::FIRST_CELL;
+	}
 }
