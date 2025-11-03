@@ -3,9 +3,11 @@
 #include "../../header/Event/EventPollingManager.h"
 
 using namespace UIElements;
+using namespace Buttons;
 
 namespace Gameplay
 {
+    class Board;
     enum class CellState
     {
         HIDDEN,
@@ -29,6 +31,7 @@ namespace Gameplay
 	class Cell
 	{
 	private:
+        Board* board;
 		sf::Vector2i position;
 
 		const int tile_size = 128;
@@ -42,15 +45,21 @@ namespace Gameplay
         const float cell_top_offset = 274.0f;
         const float cell_left_offset = 583.0f;
 
-        void Initialize(float width, float height, sf::Vector2i position);
+        void Initialize(float width, float height, sf::Vector2i position,Board* board);
 
         sf::Vector2f Get_Cell_Screen_Position(float width,float height)const;
+        sf::Vector2i Get_Cell_Position();
 
-	public:
-		Cell(float width, float height, sf::Vector2i position);
+        void Register_Cell_Button_Call_Back();
+        void Cell_Button_Call_Back(Buttons::MouseButtonType button_type);
+
+    public:
+        Cell(float width, float height, sf::Vector2i position,Board* board);
 		~Cell() = default;
 
 		void Render(sf::RenderWindow& window);
+
+        void Update(Event::EventPollingManager& event_Manager,const sf::RenderWindow& window);
 
         CellState Get_Cell_State()const;
         void Set_Cell_State(CellState state);
@@ -59,5 +68,9 @@ namespace Gameplay
         void Set_Cell_Type(CellType type);
 
         void Set_Cell_Texture();
+
+        bool Can_Open_Call()const;
+        void Open();
+        void Toggle_Flag();
 	};
 }
