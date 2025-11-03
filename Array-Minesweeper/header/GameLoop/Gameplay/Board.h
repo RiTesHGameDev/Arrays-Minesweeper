@@ -65,6 +65,7 @@ namespace Gameplay
 		bool Is_Valid_Mine_Position(sf::Vector2i first_cell_position, int x, int y);
 	public:
 		Board(GameplayManager* gameplay_manager);
+		int Get_Remaining_Mines_Counts()const;
 		BoardState Get_Board_State()const;
 		bool Are_All_Cells_Open();
 		void Flag_All_Mines();

@@ -276,6 +276,10 @@ namespace Gameplay
 		}
 		return open_cell == (total_cells - mines_count);
 	}
+	int Board::Get_Remaining_Mines_Counts()const
+	{
+		return mines_count - flagged_cells;
+	}
 	BoardState Board::Get_Board_State()const
 	{
 		return board_state;

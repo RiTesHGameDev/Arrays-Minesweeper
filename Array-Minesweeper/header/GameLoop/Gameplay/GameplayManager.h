@@ -2,9 +2,11 @@
 #include "../../header/GameLoop/Gameplay/Board.h"
 #include "../../header/Event/EventPollingManager.h"
 #include "SFML/Graphics.hpp"
+#include "../../header/UI/Gameplay/GameplayUI.h"
 
 namespace Gameplay
 {
+	using namespace UI;
 	enum class GameResult
 	{
 		NONE,
@@ -22,6 +24,7 @@ namespace Gameplay
 		Board* board;
 
 		GameResult game_result;
+		GameplayUI* gameplay_ui;
 
 		const float max_level_duration = 150.0f;
 		const float game_over_time = 11.0f;
@@ -39,6 +42,8 @@ namespace Gameplay
 
 		void Game_Won();
 		void Game_Lost();
+
+		int Get_Remaining_Mines_Count()const;
 	public:
 		GameplayManager();
 		~GameplayManager();
