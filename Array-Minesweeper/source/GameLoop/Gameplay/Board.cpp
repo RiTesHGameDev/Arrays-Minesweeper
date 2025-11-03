@@ -13,14 +13,13 @@ namespace Gameplay
 		Initialize_Board_Image();
 		Initialize_Variables(gameplay_manager);
 		Create_Board();
-
-		Populate_Board();
 	}
 	void Board::Initialize_Variables(GameplayManager* gameplayManager)
 	{
 		this->gameplay_manager = gameplayManager;
 		//funtion to initialize random engine
 		random_engine.seed(random_device());
+		board_state = BoardState::FIRST_CELL;
 	}
 	void Board::Initialize_Board_Image()
 	{
@@ -66,12 +65,12 @@ namespace Gameplay
 			}
 		}
 	}
-	void Board::Populate_Board()
+	void Board::Populate_Board(sf::Vector2i cell_position)
 	{
-		Populate_Mines();
+		Populate_Mines(cell_position);
 		Populate_Cells();
 	}
-	void Board::Populate_Mines()
+	void Board::Populate_Mines(sf::Vector2i first_cell_position)
 	{
 		std::uniform_int_distribution<int>x_dist(0, number_of_columns - 1);
 		std::uniform_int_distribution<int>y_dist(0,number_of_rows - 1);
@@ -83,11 +82,11 @@ namespace Gameplay
 			int x = x_dist(random_engine);
 			int y = y_dist(random_engine);
 
-			if (cell[x][y]->Get_Cell_Type()!= CellType::MINE)
-			{
-				cell[x][y]->Set_Cell_Type(CellType::MINE);
-				++mine_placed;
-			}
+			if (Is_Valid_Mine_Position(first_cell_position, x, y))
+				continue;
+
+			cell[x][y]->Set_Cell_Type(CellType::MINE);
+			++mine_placed;
 		}
 	}
 	void Board::Populate_Cells()
@@ -131,6 +130,11 @@ namespace Gameplay
 		return(cell_position.x >= 0 && cell_position.y >= 0 &&
 			cell_position.x < number_of_columns && cell_position.y < number_of_rows);
 	}
+	bool Board::Is_Valid_Mine_Position(sf::Vector2i first_cell_position, int x, int y)
+	{
+		return (x == first_cell_position.x && y == first_cell_position.y) || 
+			cell[x][y]->Get_Cell_Type() == CellType::MINE;
+	}
 	void Board::Update(Event::EventPollingManager& event_manager, const sf::RenderWindow& window)
 	{
 		for (int row = 0;row < number_of_rows;++row)
@@ -159,6 +163,11 @@ namespace Gameplay
 	{
 		if (!cell[cell_position.x][cell_position.y]->Can_Open_Call())
 			return;
+		if (board_state == BoardState::FIRST_CELL)
+		{
+			Populate_Board(cell_position);
+			board_state = BoardState::PLAYING;
+		}
 		Process_Cell_Type(cell_position);
 	}
 	void Board::Toggle_Flag(sf::Vector2i cell_position)
@@ -236,5 +245,13 @@ namespace Gameplay
 				}
 			}
 		}
+	}
+	BoardState Board::Get_Board_State()const
+	{
+		return board_state;
+	}
+	void Board::Set_Board_State(BoardState state)
+	{
+		board_state = state;
 	}
 }
