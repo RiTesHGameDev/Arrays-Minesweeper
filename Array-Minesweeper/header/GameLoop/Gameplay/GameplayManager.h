@@ -37,11 +37,15 @@ namespace Gameplay
 		void Process_Time_Over();
 		void Handle_Gameplay(Event::EventPollingManager& event_manager, sf::RenderWindow& window);
 
+		void Game_Won();
+		void Game_Lost();
 	public:
 		GameplayManager();
 		~GameplayManager();
 		void Set_Game_Result(GameResult gameResult);
+		void Check_Game_Win();
+		void Process_Game_Result();
 		void Render(sf::RenderWindow& window);
-		void Update(Event::EventPollingManager& event_manager, const sf::RenderWindow& window);
+		void Update(Event::EventPollingManager& event_manager,sf::RenderWindow& window);
 	};
 }

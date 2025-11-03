@@ -66,6 +66,8 @@ namespace Gameplay
 	public:
 		Board(GameplayManager* gameplay_manager);
 		BoardState Get_Board_State()const;
+		bool Are_All_Cells_Open();
+		void Flag_All_Mines();
 		void Set_Board_State(BoardState state);
 		void Reveal_All_Mines();
 		void On_Cell_Button_Clicked(sf::Vector2i cell_position, UIElements::Buttons::MouseButtonType mouse_button_type);
