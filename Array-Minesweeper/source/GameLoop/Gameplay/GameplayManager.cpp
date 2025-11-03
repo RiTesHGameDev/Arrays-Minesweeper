@@ -19,6 +19,7 @@ namespace Gameplay
 	void GameplayManager::Initialize_Variables()
 	{
 		board = new Board(this);
+		remaining_time = max_level_duration;
 	}
 	void GameplayManager::Initialize_Background_Image()
 	{
@@ -35,14 +36,27 @@ namespace Gameplay
 		board->Render(window);
 	}
 	void GameplayManager::Update(Event::EventPollingManager& event_manager,
-		const sf::RenderWindow& window)
+		 sf::RenderWindow& window)
 	{
 		if (!Has_Game_Ended())
 		{
-			board->Update(event_manager, window);
+			Handle_Gameplay(event_manager,window);
 		}
 	}
-	void GameplayManager::SetGameResult(GameResult gameResult)
+	void GameplayManager::Handle_Gameplay(Event::EventPollingManager& event_manager, sf::RenderWindow& window)
+	{
+		Update_Remaining_Time();
+		board->Update(event_manager, window);
+	}
+	void GameplayManager::Update_Remaining_Time()
+	{
+		if (remaining_time <= 0)
+		{
+			remaining_time = 0;
+			game_result = GameResult::LOST;
+		}
+	}
+	void GameplayManager::Set_Game_Result(GameResult gameResult)
 	{
 		this->game_result = gameResult;
 	}
